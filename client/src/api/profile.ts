@@ -1,4 +1,4 @@
-const API_BASE_URL = "https://kku-for-deploy.onrender.com";
+const API_BASE_URL = process.env.REACT_APP_API_ENDPOINT;
 
 export const fetchUserProfile = async (id: string): Promise<any> => {
   if (!id) {
@@ -64,7 +64,7 @@ export const fetchPostsByUser = async (userId: string) => {
 export const fetchLikedPosts = async (userId: string) => {
   try {
     const response = await fetch(
-      `https://kku-for-deploy.onrender.com/posts/likedPosts/${userId}`
+      `${process.env.REACT_APP_API_ENDPOINT}/posts/likedPosts/${userId}`
     );
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);

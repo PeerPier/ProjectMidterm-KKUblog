@@ -29,7 +29,7 @@ const ManageUser: React.FC<UserProps> = ({ users, allUsers }) => {
     [key: string]: boolean;
   }>({});
 
-  const API_BASE_URL = "https://kku-for-deploy.onrender.com";
+  const API_BASE_URL = process.env.REACT_APP_API_ENDPOINT;
   const navigate = useNavigate();
 
   const genderData = {

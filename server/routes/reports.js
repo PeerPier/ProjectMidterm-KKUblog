@@ -7,6 +7,7 @@ const Comment = require("../models/comment");
 const Like = require("../models/like");
 const Notification = require("../models/notifaications");
 const jwt = require("jsonwebtoken");
+const { NotiMailer } = require("../mail/noti_sender");
 
 const verifyJWT = (req, res, next) => {
   const authHeader = req.headers["authorization"] || req.headers["Authorization"];
@@ -145,6 +146,8 @@ router.delete("/:reportId/deletePost",verifyJWT, async (req, res) => {
       reason: report.reason
     });
     await notification.save();
+
+    NotiMailer(notification.notification_for,'System',notification.type,post.topic,notification.reason);
 
     res.status(200).json({
       message: "Post deleted successfully and report marked as declined.",

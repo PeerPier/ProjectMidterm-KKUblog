@@ -117,7 +117,7 @@ const transformData = (data: any[]): MonthData[] => {
 
 const AdminHome: React.FC = () => {
   const { id } = useParams<{ id: string }>();
-  const API_BASE_URL = "https://kku-for-deploy.onrender.com";
+  const API_BASE_URL = process.env.REACT_APP_API_ENDPOINT;
   const adminUsername = sessionStorage.getItem("userId");
 
   const [adminProfile, setAdminProfile] = useState<any>(true);

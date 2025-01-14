@@ -9,6 +9,7 @@ const Notification = require("../models/notifaications");
 const auth = require("./authMiddleware");
 const mongoose = require("mongoose");
 const jwt = require("jsonwebtoken");
+const { NotiMailer } = require("../mail/noti_sender");
 
 router.get("/search", async (req, res) => {
   const query = req.query.query;
@@ -398,6 +399,7 @@ router.post("/:id/likes", async (req, res) => {
           entityModel: "Post",
         });
         await notification.save();
+        NotiMailer(notification.user,userId,notification.type,postId);
       }
 
       res.status(200).json({ message: "Post liked", post, like: like._id });
@@ -454,6 +456,7 @@ router.post("/:id/comment", async (req, res) => {
       entityModel: "Post",
     });
     await notification.save();
+    NotiMailer(notification.user,author,notification.type,postId);
 
     res.status(201).json({
       message: "Comment created successfully",
@@ -566,6 +569,7 @@ router.post("/:postId/comment/:commentId/reply", auth, async (req, res) => {
         entityModel: "Comment",
       });
       await notification.save();
+      NotiMailer(notification.user,author,notification.type,postId);
     }
 
     res.status(201).json({

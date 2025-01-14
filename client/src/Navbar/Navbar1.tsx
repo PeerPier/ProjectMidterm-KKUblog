@@ -226,7 +226,7 @@ const Navbar1: React.FC<Navbar1Props> = ({ children }) => {
   ) => {
     e.preventDefault();
     try {
-      await axios.patch(`https://kku-for-deploy.onrender.com/notifications/${notificationId}/mark-as-read`);
+      await axios.patch(`${process.env.REACT_APP_API_ENDPOINT}/notifications/${notificationId}/mark-as-read`);
       setNotifications((prevNotifications) =>
         prevNotifications.map((notification) =>
           notification._id === notificationId ? { ...notification, isRead: true } : notification
@@ -241,7 +241,7 @@ const Navbar1: React.FC<Navbar1Props> = ({ children }) => {
   useEffect(() => {
     const fetchNotifications = async () => {
       try {
-        const response = await axios.get(`https://kku-for-deploy.onrender.com/notifications?userId=${userId}`);
+        const response = await axios.get(`${process.env.REACT_APP_API_ENDPOINT}/notifications?userId=${userId}`);
         setNotifications(response.data);
       } catch (error) {
         console.error("Error fetching notifications:", error);

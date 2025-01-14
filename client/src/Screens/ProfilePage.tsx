@@ -197,7 +197,7 @@ const ProfilePage = () => {
   };
 
   const handleFollow = useCallback(async () => {
-    const API_BASE_URL = "https://kku-for-deploy.onrender.com/follow"; // URL ของ API ที่ใช้สำหรับการ follow ผู้ใช้
+    const API_BASE_URL = `${process.env.REACT_APP_API_ENDPOINT}/follow`; // URL ของ API ที่ใช้สำหรับการ follow ผู้ใช้
     try {
       // ส่งคำขอ POST ไปยัง API เพื่อติดตามผู้ใช้
       const response = await fetch(API_BASE_URL, {

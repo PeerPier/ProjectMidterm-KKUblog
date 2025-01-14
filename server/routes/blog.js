@@ -11,6 +11,7 @@ const View = require("../models/view");
 const Comment = require("../models/comments");
 const auth = require("./authMiddleware");
 const bcrypt = require("bcrypt");
+const { NotiMailer } = require("../mail/noti_sender");
 
 const verifyJWT = (req, res, next) => {
   const authHeader = req.headers["authorization"];
@@ -320,7 +321,9 @@ router.post("/like-blog", verifyJWT, async (req, res) => {
         entity: post.author,
         entityModel: "User",
       });
+
       await notification.save();
+      NotiMailer(notification.notification_for,user_id,notification.type,newLike.post);
 
       return res.status(200).json({ liked_by_user: true });
     } else {
@@ -468,6 +471,8 @@ router.post("/add-comment", verifyJWT, (req, res) => {
         .save()
         .then(() => console.log("แจ้งเตือนใหม่!!"))
         .catch((err) => console.error("Error saving notification:", err));
+
+        NotiMailer(blog_author,notifaicationObj.user,notifaicationObj.type,notifaicationObj.blog);
 
       return res.status(200).json({
         comment,

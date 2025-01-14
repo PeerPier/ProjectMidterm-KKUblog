@@ -1,4 +1,4 @@
-export const API_BASE_URL = "https://kku-for-deploy.onrender.com";
+export const API_BASE_URL = process.env.REACT_APP_API_ENDPOINT;
 
 export const postRequest = async (url: string, body: any) => {
   const response = await fetch(url, {

@@ -1,4 +1,4 @@
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import { FaRegHeart } from "react-icons/fa";
 import { FaHeart } from "react-icons/fa";
 import { FaRegCommentDots } from "react-icons/fa";
@@ -10,10 +10,12 @@ import toast, { Toaster } from "react-hot-toast";
 import axios from "axios";
 import { IoBookmarkOutline } from "react-icons/io5";
 import { MdOutlineBookmark } from "react-icons/md";
+import LikeModal from "../components/like-modal.component";
 
 const BlogInteraction = () => {
   const blogContext = useContext(BlogContext);
   const userContext = useContext(UserContext);
+  const [showLikesModal, setShowLikesModal] = useState(false);
 
   if (!blogContext || !userContext) {
     return null;
@@ -170,9 +172,9 @@ const BlogInteraction = () => {
           >
             {islikedByUser ? <FaHeart /> : <FaRegHeart />}
           </button>
-          <p className="m-0" style={{ color: "#494949" }}>
+          <button className="m-0" style={{ color: "#494949" }} onClick={()=> setShowLikesModal(true)}>
             {total_likes}
-          </p>
+          </button>
 
           <button
             onClick={() => setCommentWrapper((preVal) => !preVal)}
@@ -231,6 +233,12 @@ const BlogInteraction = () => {
         </div>
       </div>
 
+      <LikeModal
+        isOpen={showLikesModal}
+        onClose={()=>setShowLikesModal(false)}
+        postId={_id || ""}
+        accessToken={access_token || ""}
+      />
       <hr className="border-grey my-2" />
     </>
   );

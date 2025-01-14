@@ -2,7 +2,7 @@ import axios, { AxiosResponse } from "axios";
 import { Post } from "../types/post";
 import Cookies from "js-cookie";
 
-const API_BASE_URL = "https://kku-for-deploy.onrender.com";
+const API_BASE_URL = process.env.REACT_APP_API_ENDPOINT;
 
 const createPost = async (post: any): Promise<any> => {
   const url = `${API_BASE_URL}/posts`;
@@ -375,7 +375,7 @@ const deletePostById = async (id: string): Promise<any> => {
       throw new Error("Token is missing");
     }
 
-    const response = await fetch(`https://kku-for-deploy.onrender.com/posts/${id}`, {
+    const response = await fetch(`${process.env.REACT_APP_API_ENDPOINT}/posts/${id}`, {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",

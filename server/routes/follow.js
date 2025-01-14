@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const Notification = require("../models/notifaications");
 const User = require("../models/user");
+const { NotiMailer } = require("../mail/noti_sender");
  
 router.post("/", async (req, res) => {
   try {
@@ -46,6 +47,7 @@ router.post("/", async (req, res) => {
           entityModel: "User", // Entity model type
         });
         await notification.save();
+        NotiMailer(notification.notification_for,notification.user,notification.type);
       }
     }
  

@@ -61,7 +61,7 @@ const LikeModal = ({
   }, [isOpen, postId]);
 
   const handleFollow = useCallback(async (userId: string) => {
-    const API_BASE_URL = "https://kku-for-deploy.onrender.com/follow";
+    const API_BASE_URL = `${process.env.REACT_APP_API_ENDPOINT}/follow`;
     try {
       const response = await fetch(API_BASE_URL, {
         method: "POST",

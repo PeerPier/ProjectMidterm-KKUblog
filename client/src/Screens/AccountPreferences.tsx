@@ -27,7 +27,7 @@ const AccountPreferences: React.FC = () => {
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [newNotificationSetting, setNewNotificationSetting] =
     useState<boolean>(true);
-  const API_BASE_URL = "https://kku-for-deploy.onrender.com";
+  const API_BASE_URL = process.env.REACT_APP_API_ENDPOINT;
   const userId = sessionStorage.getItem("userId");
 
   const toggleSwitch = () => {

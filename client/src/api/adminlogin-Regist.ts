@@ -1,6 +1,6 @@
 import Cookies from "js-cookie";
 
-const API_BASE_URL = "https://kku-for-deploy.onrender.com";
+const API_BASE_URL = process.env.REACT_APP_API_ENDPOINT;
 
 export const registerAdmin = async (admin: any): Promise<any> => {
   const url = `${API_BASE_URL}/admin/register`;
