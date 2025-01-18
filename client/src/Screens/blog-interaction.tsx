@@ -71,6 +71,21 @@ const BlogInteraction = () => {
         .catch((err) => {
           console.log(err);
         });
+        // ตรวจสอบสถานะการบันทึก (saved-blogs)
+      axios
+      .get( `${process.env.REACT_APP_API_ENDPOINT}/create-blog/saved-blogs`,{
+        headers: {
+          Authorization: `Bearer ${access_token}`,
+        },
+      })
+      .then(({ data: { savedBlogs } }) => {
+        const isSaved = savedBlogs.some((blog:any) => blog._id === _id);
+        setSaveByUser(isSaved); // อัปเดตสถานะการบันทึก
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+
     }
   }, []);
 

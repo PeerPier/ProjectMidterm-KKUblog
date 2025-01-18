@@ -83,7 +83,7 @@ const Notifications = () => {
           <div className="notifications-header">
             <h3>Chats</h3>
             <div className="mark-as-read" onClick={() => markAllNotificationsAsRead(notifications)}>
-              Mark all as read
+            Mark all as read  
             </div>
           </div>
 

@@ -228,7 +228,7 @@ const LikeModal = ({
               ))}
             </div>
           ) : (
-            <div className="text-center p-4 text-muted">No likes yet</div>
+            <div className="text-center p-4 text-muted">ไม่มีผู้ใช้กดถูกใจ</div>
           )}
         </div>
       </div>

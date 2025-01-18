@@ -17,9 +17,12 @@ const DeleteAdminAccountModal: React.FC<{
 
   const handleDeleteAccount = async () => {
     try {
-      const response = await axios.delete(`${API_BASE_URL}/profile/edit-profile/delete/${userId}`, {
-        data: { password }
-      });
+      const response = await axios.delete(
+        `${API_BASE_URL}/profile/edit-profile/delete/${userId}`,
+        {
+          data: { password },
+        }
+      );
 
       if (response.data.message === "User deleted successfully") {
         setSuccessMessage("Account deleted successfully!");
@@ -36,16 +39,15 @@ const DeleteAdminAccountModal: React.FC<{
   return (
     <Modal show={show} onHide={onClose}>
       <Modal.Header closeButton>
-        <Modal.Title>Delete Account</Modal.Title>
+        <Modal.Title>ลบบัญชีผู้ใช้</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <p>Are you sure you want to delete your account? This action cannot be undone.</p>
+        <p>คุณแน่ใจหรือไม่ว่าต้องการลบบัญชีของคุณ</p>
         <Form>
           <Form.Group controlId="password">
-            <Form.Label>Enter your password to confirm</Form.Label>
+            <Form.Label>กรอกรหัสผ่านของคุณเพื่อยืนยัน</Form.Label>
             <Form.Control
               type="password"
-              placeholder="Enter your password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
             />
@@ -57,10 +59,10 @@ const DeleteAdminAccountModal: React.FC<{
       </Modal.Body>
       <Modal.Footer>
         <Button variant="secondary" onClick={onClose}>
-          Cancel
+          ยกเลิก
         </Button>
         <Button variant="danger" onClick={handleDeleteAccount}>
-          Delete Account
+          ยืนยัน
         </Button>
       </Modal.Footer>
     </Modal>

@@ -205,7 +205,7 @@ const BlogEditor = () => {
           <img src={logoKKU} alt="" className="logo-img" />
         </Link>
 
-        <p className=" new-blog">{topic.length ? topic : "บล็อกใหม่"}</p>
+        <p className=" new-blog">{topic.length ? topic : ""}</p>
 
         <div className="d-flex gap-4" style={{ marginLeft: "auto" }}>
           <button className="btn-dark py-2" onClick={handlePublishEvent}>

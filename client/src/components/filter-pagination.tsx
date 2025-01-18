@@ -4,6 +4,7 @@ import { Post } from "../types/post";
 interface FilterPaginationDataProps {
   create_new_arr?: boolean;
   state?: any;
+  save?: any;  // เพิ่ม property save (ถ้าจำเป็น)
   data: any[];
   page: number;
   countRoute: string;

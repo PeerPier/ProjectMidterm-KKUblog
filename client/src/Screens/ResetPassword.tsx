@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-
 import { Link, useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import { toast, ToastContainer } from "react-toastify";
@@ -8,9 +7,7 @@ import {
   AlertProps,
   Box,
   Button,
-  ButtonBase,
   Container,
-  TextField,
   Typography
 } from "@mui/material";
 import InputBox from "../components/input.component";
@@ -94,7 +91,6 @@ const ResetPassword: React.FC = () => {
       })
       .then((res) => {
         if (res.data.success) {
-          const redirectTo = res.data.role === "admin" ? "/admin/login" : "/signin";
           toast.success(res.data.message);
 
           setAlert({
@@ -103,9 +99,10 @@ const ResetPassword: React.FC = () => {
             severity: "success"
           });
 
+          // Redirect to login page after success
           setTimeout(() => {
-            navigate(redirectTo);
-          }, 3000);
+            window.location.href = "https://kku-client.vercel.app/admin/login"; // Redirect to login page
+          }, 3000); // Delay for the user to see success message
         } else {
           toast.error(res.data.message);
         }
@@ -122,6 +119,7 @@ const ResetPassword: React.FC = () => {
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
+        minHeight: "100vh", // Ensures the container spans the full height of the viewport
         padding: "10px"
       }}
     >
@@ -200,7 +198,7 @@ const ResetPassword: React.FC = () => {
         <Box sx={{ marginTop: "20px" }}>
           <Typography variant="body1">
             จำรหัสผ่านได้แล้ว?{" "}
-            <Link to="/signin" style={{ color: "#635bff", textDecoration: "none" }}>
+            <Link to="https://kku-client.vercel.app/admin/login" style={{ color: "#635bff", textDecoration: "none" }}>
               เข้าสู่ระบบ
             </Link>
           </Typography>

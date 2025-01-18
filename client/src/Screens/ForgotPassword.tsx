@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { Link, Navigate, useNavigate } from "react-router-dom";
 import { Button, Container, Typography, Box, Alert, AlertProps } from "@mui/material";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -9,7 +8,6 @@ import InputBox from "../components/input.component";
 type CustomAlertProps = AlertProps & { show: boolean; message: string };
 
 const ForgotPassword = () => {
-  const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [alert, setAlert] = useState<CustomAlertProps>({
     show: false,
@@ -19,7 +17,7 @@ const ForgotPassword = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("DEBUG",email)
+    console.log("DEBUG", email);
     fetch(`${process.env.REACT_APP_API_ENDPOINT}/forgot-password`, {
       method: "POST",
       headers: {
@@ -48,10 +46,12 @@ const ForgotPassword = () => {
     <Container
       maxWidth="xs"
       sx={{
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        padding: "10px"
+        display: "flex",              // ใช้ Flexbox เพื่อจัดการตำแหน่ง
+        justifyContent: "center",     // จัดกลางในแนวนอน
+        alignItems: "center",         // จัดกลางในแนวตั้ง
+        minHeight: "100vh",           // ทำให้ Container ใช้พื้นที่ทั้งหน้าจอ
+        padding: "10px",              // กำหนดระยะห่างขอบ
+        
       }}
     >
       <ToastContainer />
@@ -62,7 +62,8 @@ const ForgotPassword = () => {
           backgroundColor: "white",
           width: "100%",
           maxWidth: "400px",
-          textAlign: "center"
+          textAlign: "center",
+                    // เพิ่มเงาให้กับกล่องเพื่อความสวยงาม
         }}
       >
         <Typography variant="h4" component="h1" sx={{ marginBottom: "20px", fontWeight: "600" }}>
@@ -100,7 +101,9 @@ const ForgotPassword = () => {
               variant="contained"
               fullWidth
               disableElevation
-              onClick={() => navigate("/")}
+              onClick={() => {
+                window.location.href = "https://kku-client.vercel.app/admin/login";
+              }}
               sx={{
                 backgroundColor: "#000",
                 color: "#fff",
@@ -135,14 +138,6 @@ const ForgotPassword = () => {
             </Button>
           )}
         </form>
-        <Box sx={{ marginTop: "20px" }}>
-          <Typography variant="body1">
-            ยังไม่มีบัญชีใช่ไหม?{" "}
-            <Link to="/signup" style={{ color: "#635bff", textDecoration: "none" }}>
-              ลงทะเบียน
-            </Link>
-          </Typography>
-        </Box>
       </Box>
     </Container>
   );

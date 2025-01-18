@@ -7,7 +7,7 @@ import Loader from "../components/loader.component";
 import toast, { Toaster } from "react-hot-toast";
 import "../misc/edit-profile.css";
 import InputBox from "../components/input.component";
-import { uploadImage } from "../common/b2";
+import { uploadImage, uploadProfileImage } from "../common/b2";
 import { storeInSession } from "../common/session";
 
 const EditProfile = () => {
@@ -60,7 +60,6 @@ const EditProfile = () => {
       setUpdateProfileImg(img);
     }
   };
-
   const handleImageUpload = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
 
@@ -68,7 +67,8 @@ const EditProfile = () => {
       let loadingToast = toast.loading("กำลังอัพโหลด...");
       (e.target as HTMLButtonElement).setAttribute("disabled", "true");
 
-      uploadImage(updateProfileImg)
+      // อัปโหลดรูปไปยัง Firebase
+      uploadProfileImage(updateProfileImg)
         .then((url) => {
           if (url) {
             axios
@@ -86,6 +86,8 @@ const EditProfile = () => {
                   ...userAuth,
                   profile_picture: data.profile_picture,
                 };
+                console.log("Updated userAuth:", newUserAuth); // ตรวจสอบข้อมูลที่เก็บใน userAuth
+                
 
                 storeInSession("user", JSON.stringify(newUserAuth));
                 setUserAuth(newUserAuth);
@@ -94,29 +96,33 @@ const EditProfile = () => {
 
                 toast.dismiss(loadingToast);
                 if (e.currentTarget) {
-                  e.currentTarget.removeAttribute("disabled"); // ตรวจสอบว่า currentTarget ไม่เป็น null
+                  e.currentTarget.removeAttribute("disabled");
                 }
 
                 toast.success("อัพโหลดแล้ว👍");
               })
               .catch(({ response }) => {
-                alert("ERROR")
                 toast.dismiss(loadingToast);
-
                 if (e.currentTarget) {
                   e.currentTarget.removeAttribute("disabled");
                 }
-
-                toast.success(response.data.error);
+                toast.error(
+                  response?.data?.error || "เกิดข้อผิดพลาดในการบันทึก URL"
+                );
               });
+              console.log("Uploaded Image URL:", url);
           }
         })
         .catch((err) => {
-          console.log(err);
+          console.error("Firebase upload failed:", err);
+          toast.dismiss(loadingToast);
+          if (e.currentTarget) {
+            e.currentTarget.removeAttribute("disabled");
+          }
+          toast.error(`อัพโหลดรูปไม่สำเร็จ`);
         });
     }
   };
-
   const handleSumit = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
 
@@ -151,7 +157,7 @@ const EditProfile = () => {
 
     axios
       .post(
-        `${process.env.REACT_APP_API_ENDPOINT}/profile/edit-profile/update/${userId}`,
+        `${process.env.REACT_APP_API_ENDPOINT}/users/update-profile`,
         {
           username,
           bio,

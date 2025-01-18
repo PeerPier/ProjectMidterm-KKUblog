@@ -26,15 +26,15 @@ function Navbar() {
 
   useEffect(() => {
     const fetchNotifications = async () => {
-      if(userId){
+      if (userId) {
         try {
           const response = await axios.get(
             `${API_BASE_URL}/notifications/${userId}`
           );
-  
+
           if (response.status === 200) {
             setNotifications(response.data);
-            console.log(response.data)
+            console.log(response.data);
           } else {
             console.error("Failed to fetch notifications:", response.data);
           }
@@ -72,10 +72,12 @@ function Navbar() {
           )
         );
         navigate(
-          type === "follow" ? `/user/${userId}` : 
-          type === "delete" ? `/` : 
-          `/blog/${entityId}`
-        );        
+          type === "follow"
+            ? `/user/${userId}`
+            : type === "delete"
+            ? `/`
+            : `/blog/${entityId}`
+        );
       } else {
         console.error("Failed to mark notification as read:", response.data);
       }
@@ -171,6 +173,7 @@ function Navbar() {
         {access_token ? (
           <>
             <Notifications />
+
             {/* <Link to="/dashboard/notification"> */}
             <div
               className="relative"
@@ -220,6 +223,7 @@ function Navbar() {
                     overflowY: "auto", // เปิด scroll
                   }}
                 >
+                  <h4 style={{marginLeft:"0.5rem"}}>การแจ้งเตือน</h4>
                   {notifications.length === 0 ? (
                     <p>ไม่มีการแจ้งเตือน</p>
                   ) : (
@@ -251,7 +255,11 @@ function Navbar() {
                         }}
                       >
                         <img
-                          src={notification.type != "delete" ? notification.user.profile_picture : "https://www.svgrepo.com/show/116240/wrench-and-hammer-tools-thin-outline-symbol-inside-a-circle.svg"}
+                          src={
+                            notification.type != "delete"
+                              ? notification.user.profile_picture
+                              : "https://www.svgrepo.com/show/116240/wrench-and-hammer-tools-thin-outline-symbol-inside-a-circle.svg"
+                          }
                           alt={notification.type != "delete" ? "User" : "Admin"}
                           className="rounded-circle"
                           style={{
@@ -263,8 +271,8 @@ function Navbar() {
                         />
                         <div style={{ flexGrow: 1 }}>
                           <p style={{ margin: 0, fontWeight: 500 }}>
-                            {notification.type === "delete"?
-                              `บล็อกของคุณได้รับการตรวจสอบและถูกลบเนื่องจาก ${notification.reason}`
+                            {notification.type === "delete"
+                              ? `บล็อกของคุณได้รับการตรวจสอบและถูกลบเนื่องจาก ${notification.reason}`
                               : notification.type === "follow"
                               ? `${notification.user.fullname} เริ่มติดตามคุณ`
                               : notification.type === "like"

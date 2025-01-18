@@ -168,12 +168,12 @@ const ManageCate: React.FC<{ blogsData: Blog[] }> = ({ blogsData }) => {
               style={{
                 marginTop: "0.5rem",
                 overflowY: "scroll",
-                maxHeight: "300px"
+                maxHeight: "400px"
               }}
             >
               {memoizedTags.map(({ blog_id, tags, banner }: any) => (
-                <div className="item" key={`${blog_id}-${tags}`}>
-                  <div className="right">
+                <div className="item" key={`${blog_id}-${tags}`} style={{margin:"20px 10px"}}>
+                  <div className="right" style={{}}>
                     <div className="info">
                       <h3>{tags}</h3>
                     </div>

@@ -10,6 +10,8 @@ import {
 } from "react";
 import { AiOutlineUser, AiOutlineGlobal } from "react-icons/ai";
 import { FaEarthAmericas } from "react-icons/fa6";
+import { FaEye } from "react-icons/fa";
+import { MdReport } from "react-icons/md";
 import AnimationWrapper from "./page-animation";
 import Loader from "../components/loader.component";
 import { getDay } from "../common/date";
@@ -276,21 +278,42 @@ const BlogPage = () => {
 
             <div className="mt-2">
               <div className="d-flex justify-content-between align-items-center">
-                <h2 className="mt-4 fs-3">{topic}</h2>
-                <p>
-                    {visibility === "followers" ? (
-                      <>
-                        <AiOutlineUser style={{ marginRight: "0.5rem" }} />
-                        ผู้ติดตาม
-                      </>
-                    ) : (
-                      <>
-                        <FaEarthAmericas style={{ marginRight: "0.5rem" }} />
-                        สาธารณะ
-                      </>
-                    )}
+                <div className="d-flex justify-content-start align-items-center">
+                  <h2 className="mt-4 fs-3 mb-0">{topic}</h2>
+                  <p className="mb-0 ms-3 mt-4 ">
+                    {publishedAt
+                      ? `${getDay(publishedAt)} ${
+                          new Date(publishedAt).getFullYear() + 543
+                        } เวลา ${new Date(publishedAt).toLocaleTimeString(
+                          "th-TH",
+                          {
+                            hour: "2-digit",
+                            minute: "2-digit",
+                          }
+                        )}`
+                      : "ไม่ทราบวันที่"}
                   </p>
-                
+                </div>
+
+                <p className="mb-0 ms-3 mt-4 ">
+                  <FaEye style={{ fontSize: "20px", marginRight: "0.1rem" }} />{" "}
+                  {blog?.views || 0}
+                  {visibility === "followers" ? (
+                    <>
+                      <AiOutlineUser
+                        style={{ marginRight: "0.2rem", marginLeft: "0.5rem" }}
+                      />
+                      ผู้ติดตาม
+                    </>
+                  ) : (
+                    <>
+                      <FaEarthAmericas
+                        style={{ marginRight: "0.2rem", marginLeft: "0.5rem" }}
+                      />
+                      สาธารณะ
+                    </>
+                  )}
+                </p>
               </div>
 
               <div className="detail-user d-flex justify-content-between my-4">
@@ -316,27 +339,16 @@ const BlogPage = () => {
                 </div>
                 <div className="m-0 published-detail">
                   <p>
-                    เผยแพร่เมื่อ:{" "}
-                    {publishedAt
-                      ? `${getDay(publishedAt)} ${
-                          new Date(publishedAt).getFullYear() + 543
-                        } เวลา ${new Date(publishedAt).toLocaleTimeString(
-                          "th-TH",
-                          {
-                            hour: "2-digit",
-                            minute: "2-digit",
-                          }
-                        )}`
-                      : "ไม่ทราบวันที่"}
+                    <p
+                      className="cursor-pointer"
+                      onClick={() => handleShowReportModal(_id)}
+                    >
+                      <MdReport
+                        style={{ fontSize: "22px", marginRight: "0.4rem",marginBottom:"2px" }}
+                      />
+                      รายงานปัญหา
+                    </p>{" "}
                   </p>
-
-                  <p>จำนวนเข้าชม: {blog?.views || 0} <p
-                  className="cursor-pointer"
-                  onClick={() => handleShowReportModal(_id)}
-                >
-                  รายงานปัญหา
-                </p></p>
-                  
                 </div>
               </div>
             </div>
@@ -434,6 +446,8 @@ const BlogPage = () => {
             </div>
 
             <BlogInteraction />
+            <CommentsContainer/>
+
 
             {similarBlogs !== null && similarBlogs.length ? (
               <>

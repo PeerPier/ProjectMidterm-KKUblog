@@ -3,7 +3,7 @@ import { PiUsersThreeFill } from "react-icons/pi";
 import { LuView } from "react-icons/lu";
 import { updateUserAPI } from "../../api/adminProfile";
 import { useNavigate, useParams } from "react-router-dom";
-import GenderChart from "./Chart/GenderChart";
+
 import { Button, Modal, Form } from "react-bootstrap";
 import axios from "axios";
 import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai"; // Import eye icons
@@ -31,11 +31,6 @@ const ManageUser: React.FC<UserProps> = ({ users, allUsers }) => {
 
   const API_BASE_URL = process.env.REACT_APP_API_ENDPOINT;
   const navigate = useNavigate();
-
-  const genderData = {
-    male: 30,
-    female: 20
-  };
 
   const handleEditUser = (user: any) => {
     setSelectedUser(user);
@@ -74,7 +69,7 @@ const ManageUser: React.FC<UserProps> = ({ users, allUsers }) => {
   const togglePasswordVisibility = (userId: string) => {
     setPasswordVisibility((prev) => ({
       ...prev,
-      [userId]: !prev[userId]
+      [userId]: !prev[userId],
     }));
   };
 
@@ -117,29 +112,22 @@ const ManageUser: React.FC<UserProps> = ({ users, allUsers }) => {
                 <h1>{users.length}</h1>
               </div>
             </div>
-           
-          </div>
-
-          <div className="blogpost-all">
-            <div className="middle">
-              <GenderChart data={genderData} />
-            </div>
           </div>
         </div>
 
         <div className="recent-order" style={{ marginTop: "1.5rem" }}>
           <h2>รายการ</h2>
-          <div className="right">
+          <div className="right" >
             <div
               className="activity-analytics"
               style={{
                 marginTop: "0.5rem",
                 overflowY: "scroll",
-                maxHeight: "300px"
+                maxHeight: "400px",
               }}
             >
               <table>
-                <thead className="pt-5">
+                <thead className="pt-5" style={{margin:"20px 10px"}}>
                   <tr>
                     <th>วันที่</th>
                     <th>ชื่อบัญชีผู้ใช้</th>
@@ -158,23 +146,33 @@ const ManageUser: React.FC<UserProps> = ({ users, allUsers }) => {
                           <td>{u.fullname}</td>
                           <td>{u.email}</td>
                           <td className="warning">
-                            <span>{passwordVisibility[u._id] ? u.password : "*****"}</span>
+                            <span>
+                              {passwordVisibility[u._id] ? u.password : "*****"}
+                            </span>
                             <button
                               onClick={() => togglePasswordVisibility(u._id)}
                               style={{
                                 border: "none",
                                 background: "none",
-                                cursor: "pointer"
+                                cursor: "pointer",
                               }}
                             >
-                              {passwordVisibility[u._id] ? <AiFillEyeInvisible /> : <AiFillEye />}
+                              {passwordVisibility[u._id] ? (
+                                <AiFillEyeInvisible />
+                              ) : (
+                                <AiFillEye />
+                              )}
                             </button>
                           </td>
                           <td className="primary">
-                            <Button onClick={() => handleEditUser(u)}>Edit</Button>
+                            <Button onClick={() => handleEditUser(u)}>
+                              Edit
+                            </Button>
                           </td>
                           <td>
-                            <Button onClick={() => handleDeleteUser(u._id)}>Delete</Button>
+                            <Button onClick={() => handleDeleteUser(u._id)}>
+                              Delete
+                            </Button>
                           </td>
                         </tr>
                       ))
@@ -185,30 +183,37 @@ const ManageUser: React.FC<UserProps> = ({ users, allUsers }) => {
                           <td>{u.fullname}</td>
                           <td>{u.email}</td>
                           <td className="warning">
-                            <span>{passwordVisibility[u._id] ? u.password : "*****"}</span>
+                            <span>
+                              {passwordVisibility[u._id] ? u.password : "*****"}
+                            </span>
                             <button
                               onClick={() => togglePasswordVisibility(u._id)}
                               style={{
                                 border: "none",
                                 background: "none",
-                                cursor: "pointer"
+                                cursor: "pointer",
                               }}
                             >
-                              {passwordVisibility[u._id] ? <AiFillEyeInvisible /> : <AiFillEye />}
+                              {passwordVisibility[u._id] ? (
+                                <AiFillEyeInvisible />
+                              ) : (
+                                <AiFillEye />
+                              )}
                             </button>
                           </td>
                           <td className="primary">
                             <Button
                               disabled={u.google_auth ? true : false}
                               onClick={() => handleEditUser(u)}
+                              style={{backgroundColor:"#f3b15a",border:"none"}}
                             >
                               แก้ไข
                             </Button>
                           </td>
                           <td>
                             <Button
-                              disabled={u.google_auth ? true : false}
-                              onClick={() => handleDeleteUser(u._id)}
+                              // disabled={u.google_auth ? true : false}
+                              onClick={() => handleDeleteUser(u._id)} style={{backgroundColor:"#f26665",border:"none"}}
                             >
                               ลบ
                             </Button>
@@ -228,7 +233,15 @@ const ManageUser: React.FC<UserProps> = ({ users, allUsers }) => {
         </div>
       </div>
 
-      <Modal show={showEditModal} onHide={handleModalClose}>
+      <Modal
+        show={showEditModal}
+        onHide={handleModalClose}
+        style={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
         <Modal.Header closeButton>
           <Modal.Title>แก้ไขบัญชีผู้ใช้</Modal.Title>
         </Modal.Header>
@@ -245,7 +258,11 @@ const ManageUser: React.FC<UserProps> = ({ users, allUsers }) => {
 
             <Form.Group controlId="formEmail">
               <Form.Label>อีเมล</Form.Label>
-              <Form.Control type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
+              <Form.Control
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+              />
             </Form.Group>
           </Form>
         </Modal.Body>

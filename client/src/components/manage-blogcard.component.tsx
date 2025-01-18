@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { getDay } from "../common/date";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { UserContext } from "../App";
 import axios from "axios";
 
@@ -127,6 +127,60 @@ export const ManageDraftBlogPost: React.FC<ManageDraftBlogPostProps> = ({ blog }
   );
 };
 
+export const SaveBlog = ({ blog}:any) => {
+  const { banner, blog_id, topic, publishedAt, activity } = blog;
+  const [savedBlogs, setSavedBlogs] = useState<any[]>([]);
+
+  const {
+    userAuth: { access_token },
+  } = useContext(UserContext);
+
+  useEffect(() => {
+    const fetchSavedBlogs = async () => {
+      try {
+        const response = await axios.get(
+          `${process.env.REACT_APP_API_ENDPOINT}/create-blog/saved-blogsPost`,
+          {
+            headers: {
+              Authorization: `Bearer ${access_token}`,
+            },
+          }
+        );
+        setSavedBlogs(response.data.savedBlogs);
+      } catch (error) {
+        console.error("ไม่สามารถดึงข้อมูลบล็อกที่บันทึกได้");
+      }
+    };
+
+    fetchSavedBlogs();
+  }, [access_token]); // เพิ่ม access_token เพื่อการโหลดใหม่เมื่อ access_token เปลี่ยนแปลง
+
+  return (
+    <div className="manage-blogpage">
+      {savedBlogs.map((savedBlog) => (
+        <div key={savedBlog._id} className="manage-blogdetail">
+          <img
+            src={savedBlog.banner || banner} // ใช้ banner จาก savedBlog ถ้ามี
+            alt={savedBlog.topic || topic} // ใช้ topic จาก savedBlog ถ้ามี
+            className="img-manageblog"
+          />
+          <div>
+            <Link
+              to={`/blog/${savedBlog.blog_id}`} // ใช้ _id แทน blog_id ที่มาจาก props
+              className="blog-title mb-4 manage-link"
+            >
+              {savedBlog.topic || topic}
+            </Link>
+            <p className="clamp-1">
+              เผยแพร่เมื่อ: {getDay(savedBlog.publishedAt || publishedAt)}
+            </p>
+            <p>{savedBlog.des || ""}</p>
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+};
 
 const deleteBlog = (blog:any, access_token:any, target:any) => {
   let { index, blog_id, setStateFunc } = blog;
